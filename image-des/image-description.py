@@ -1,11 +1,37 @@
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+from kafka import KafkaProducer
 import requests
 import json
 
-# Replace with your Groq API key
+# Initialize Flask app
+app = Flask(__name__)
+
+# Enable CORS to allow React to communicate with Flask
+CORS(app)
+
+# Kafka Configuration
+KAFKA_BROKER = 'localhost:9092'  # Update if using a remote Kafka broker
+TOPIC_NAME = 'test_topic'
+
+# Groq API Configuration
 GROQ_API_KEY = "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"
 GROQ_API_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions"
 
-def get_image_description():
+# Initialize Kafka Producer
+producer = KafkaProducer(
+    bootstrap_servers=KAFKA_BROKER,
+    value_serializer=lambda v: json.dumps(v).encode('utf-8')  # Serialize JSON data
+)
+
+def call_groq_api(row):
+    """
+    Call the Groq API with the received Kafka message and get a structured response.
+    Combine all fields into a single text and use feature_image for the image_url.
+    """
+    # Combine all fields into a single text
+    combined_text = "\n".join([f"{key}: {value}" for key, value in row.items() if key != "feature_image"])
+
     payload = {
         "model": "llama-3.2-11b-vision-preview",
         "messages": [
@@ -14,12 +40,12 @@ def get_image_description():
                 "content": [
                     {
                         "type": "text",
-                        "text": "Make heads turn at every festive and wedding occasion with our Enchanting Pink Organza Saree. Perfect for engagements, receptions, or sangeets, this saree exudes grandeur with its luscious pink hue. The lightweight organza fabric creates a sublime shimmering aesthetic that will surely make you the star of the evening. Don this saree and let your elegance shine through.Colour:Pink Fabric:Organza Items Included:Saree Wash Care:Dry Clean Only Disclaimer Text:Product color may slightly vary due to photographic lighting sources or your monitor/screen settings. Manufacturer:Vedant Fashions Ltd, Paridhan Garment Park, 19, Canal South Road, SDF1, 4th Floor, A501-A502, Kolkata - 700015, West Bengal.Mohey brand. Describe the crucial aspects of the item."
+                        "text": combined_text
                     },
                     {
                         "type": "image_url",
                         "image_url": {
-                            "url": "https://manyavar.scene7.com/is/image/manyavar/151222-1-389_13-05-2021-13-16-2:650x900"
+                            "url": row.get("feature_image", "")
                         }
                     }
                 ]
@@ -41,10 +67,45 @@ def get_image_description():
 
     if response.status_code == 200:
         result = response.json()
+        print("Groq API Response (Structured):", json.dumps(result, indent=2))
         return result.get("choices", [{}])[0].get("message", "No message returned.")
     else:
-        return f"Error: {response.status_code} - {response.text}"
+        error_message = {"error": f"Error: {response.status_code} - {response.text}"}
+        print("Groq API Error Response:", error_message)
+        return error_message
 
-if __name__ == "__main__":
-    description = get_image_description()
-    print(description)
+@app.route('/send', methods=['POST'])
+def send_to_kafka():
+    """
+    Endpoint to send a single row to Kafka and process with Groq API.
+    Expects JSON payload with the row data.
+    """
+    try:
+        # Get the JSON data from the request
+        row = request.json
+
+        if not row:
+            return jsonify({'status': 'error', 'message': 'No data provided'}), 400
+
+        # Print the received object
+        # print("Received object:", json.dumps(row, indent=2))
+
+        # Call Groq API and get the structured response
+        groq_response = call_groq_api(row)
+        print("Final Groq API Response for the Flask Console:", json.dumps(groq_response, indent=2))
+
+        # Send the row to Kafka
+        producer.send(TOPIC_NAME, row)
+        producer.flush()  # Ensure the message is sent immediately
+
+        return jsonify({'status': 'success', 'message': 'Row sent to Kafka', 'groq_response': groq_response}), 200
+
+    except Exception as e:
+        # Handle errors
+        print("Error occurred:", str(e))
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+
+if __name__ == '__main__':
+    # Run the Flask app
+    app.run(debug=True, port=5000)

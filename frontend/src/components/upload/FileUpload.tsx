@@ -60,7 +60,20 @@ export function FileUpload({ onUpload }: FileUploadProps) {
 
         for (let i = 0; i < totalRows; i++) {
           try {
-            const rowWithDomain = { ...rows[i], domain: file.name };
+            // Exclude specified fields
+            const {
+              feature_image_s3,
+              pdp_url,
+              Retailer_name,
+              channel_id,
+              sku,
+              brand,
+              mrp,
+              category_id,
+              ...filteredRow
+            } = rows[i];
+
+            const rowWithDomain = { ...filteredRow, domain: file.name };
             await onUpload(rowWithDomain, i + 1, totalRows);
             setUploadProgress({
               fileName: file.name,
