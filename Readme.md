@@ -1,10 +1,6 @@
-Here is a possible `README.md` file for your project:
-
 ---
 
-# Stylumia Hackathon Project
-
-This project combines a modern Vite-powered React frontend, a Flask-based backend API, and Apache Kafka for event streaming and messaging. The architecture is built to demonstrate seamless integration of microservices and modern web technologies for a hackathon event.
+# Stylumia Hackathon Project - Automated KG Construction
 
 ## Demo
 
