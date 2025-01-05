@@ -9,7 +9,6 @@ GROQ_API_KEY = Config.GROQ_API_KEY
 GROQ_API_ENDPOINT = Config.GROQ_API_ENDPOINT
 GROQ_MODEL = Config.GROQ_MODEL
 
-
 def call_groq_api(row: dict) -> FashionEntity:
     """
     Process the product through the Groq API to determine its type and fill its attributes.
@@ -43,13 +42,13 @@ def call_groq_api(row: dict) -> FashionEntity:
 def determine_product_type(product_name: str) -> str:
     """
     Call the Groq API to determine the type of product (e.g., Apparel, Footwear).
-    
+
     Args:
         product_name (str): The name of the product.
-    
+
     Returns:
         str: The inferred product type (Apparel, Footwear, Accessories, Home Decor, or Unknown).
-    """
+    """ 
     payload = {
         "model": GROQ_MODEL,
         "messages": [

@@ -6,7 +6,7 @@ class FashionEntity(BaseModel):
     description: Optional[str]  # Description of the product
     attributes: Optional[Dict[str, str]]  # Additional generic attributes
     dynamicTrends: Optional[Dict[str, str]]  # Trends with phases (e.g., {"Athleisure": "Emerging"})
-
+    
 class Apparel(FashionEntity):
     material: List[str]  # Fabric material (e.g., "Cotton", "Polyester", "Silk")
     fit: Optional[List[str]]  # Fit type (e.g., "Slim", "Regular", "Oversized")
