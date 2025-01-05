@@ -44,6 +44,11 @@ To set up and run the project locally, follow these steps:
    npm install
    ```
 
+3.0 Force install react-d3-graph to resolve any compatibility issues:
+   ```bash
+   npm install react-d3-graph --force
+   ```
+
 3. Start the development server:
    ```bash
    npm run dev
