@@ -1,10 +1,6 @@
-Here is a possible `README.md` file for your project:
-
 ---
 
-# Stylumia Hackathon Project
-
-This project combines a modern Vite-powered React frontend, a Flask-based backend API, and Apache Kafka for event streaming and messaging. The architecture is built to demonstrate seamless integration of microservices and modern web technologies for a hackathon event.
+# Stylumia Hackathon Project - Automated KG Construction
 
 ## Demo
 
@@ -46,6 +42,11 @@ To set up and run the project locally, follow these steps:
 2. Install dependencies:
    ```bash
    npm install
+   ```
+
+3.0 Force install react-d3-graph to resolve any compatibility issues:
+   ```bash
+   npm install react-d3-graph --force
    ```
 
 3. Start the development server:
