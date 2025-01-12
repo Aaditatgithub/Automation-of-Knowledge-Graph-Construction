@@ -23,6 +23,7 @@ Stylumia-Hackathon/
 │   ├── flask_app/                    # Flask-based backend API
 │   └── myenv
 ├── docker-compose.yml            # Docker Compose setup for Apache Kafka
+├── unifashionLLM.ipynb           # Code for loading llava model and finetuning it with lora
 └── Readme.md                     # Project documentation
 ```
 
