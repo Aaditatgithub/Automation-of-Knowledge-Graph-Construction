@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LayoutDashboard, Database, Network } from 'lucide-react';
 import { SidebarItem } from '../../types';

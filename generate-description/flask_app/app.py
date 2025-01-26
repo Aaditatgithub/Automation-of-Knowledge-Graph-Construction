@@ -1,7 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from kafka_service import send_to_kafka
-from groq_service import call_groq_api
+from kafka_service import send_response_to_kafka
+from classification_service import classify_product
+from feature_extraction import get_structured_output
 import json
 
 # Initialize Flask app
@@ -11,35 +12,37 @@ app = Flask(__name__)
 CORS(app)
 
 @app.route('/send', methods=['POST'])
-def send_to_kafka_endpoint():
+def get_data_from_kafka():
     """
-    Endpoint to send a single row to Kafka and process with Groq API.
+    Endpoint to send response of data ingestion to Kafka.
     Expects JSON payload with the row data.
     """
     try:
-        # Get the JSON data from the request
-        row = request.json
-
-        if not row:
+        # Step 1: Get the JSON data from the request
+        product_data = request.json
+        if not product_data:
             return jsonify({'status': 'error', 'message': 'No data provided'}), 400
+        # print(product_data)
 
-        # Print the received object
-        # print("Received object:", json.dumps(row, indent=2))
+        # Step 2: Extract only the product name
+        product_name = product_data["product_name"]
 
-        # Call Groq API and get the structured response
-        groq_response = call_groq_api(row)
-        # print("Final Groq API Response for the Flask Console:", json.dumps(groq_response, indent=2))
+        # Step 3: Call the classification function with only the product name
+        product_class = classify_product({"name": product_name})
+        print("Product class:" + product_class)
 
-        # Send the row to Kafka
-        kafka_response = send_to_kafka(row)
+        # Step 4: Get structured output from LLM
+        taxonomical_class = get_structured_output(product_data, product_class)
+        print(taxonomical_class)
+
+        # Step 5: Execute CypherSQL query
+
 
         return jsonify({
             'status': 'success',
-            'message': 'Row sent to Kafka',
-            'kafka_response': kafka_response,
-            'groq_response': groq_response
+            'message': 'Node accomodated in graph',
         }), 200
-
+    
     except Exception as e:
         # Handle errors
         print("Error occurred:", str(e))

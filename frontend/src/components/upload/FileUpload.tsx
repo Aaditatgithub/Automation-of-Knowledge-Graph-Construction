@@ -64,6 +64,9 @@ export function FileUpload({ onUpload }: FileUploadProps) {
             const {
               feature_image_s3,
               pdp_url,
+              product_id,
+              department_id,
+              seller_name,
               Retailer_name,
               channel_id,
               sku,

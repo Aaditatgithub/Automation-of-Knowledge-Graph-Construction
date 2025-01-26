@@ -12,7 +12,7 @@ producer = KafkaProducer(
     value_serializer=lambda v: json.dumps(v).encode('utf-8')  # Serialize JSON data
 )
 
-def send_to_kafka(row):
+def send_response_to_kafka(row):
     """
     Send data to Kafka topic.
     """

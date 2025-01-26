@@ -2,7 +2,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Sidebar } from './components/layout/Sidebar';
 import  {ProductCatalogue}  from './components/pages/ProductCatalogue';
-import  {KnowledgeGraphs}  from './components/pages/KnowledgeGraphs';
+// import  {KnowledgeGraphs}  from './components/pages/KnowledgeGraphs';
 // Import other pages as needed
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
         <main className="flex-1 ml-64 p-4">
           <Routes>
             <Route path="/products" element={<ProductCatalogue />} />
-            <Route path="/graphs" element={<KnowledgeGraphs />} />
+            {/* <Route path="/graphs" element={<KnowledgeGraphs />} /> */}
             {/* Add other routes */}
           </Routes>
         </main>
