@@ -36,7 +36,8 @@ def get_data_from_kafka():
         print(taxonomical_class)
 
         # Step 5: Execute CypherSQL query
-
+        
+        
 
         return jsonify({
             'status': 'success',
