@@ -8,10 +8,41 @@ IGROQ_API_KEY = Config.IGROQ_API_KEY
 
 # Prompts for image description based on product class
 prompts = {
-    "Apparel": "Describe the following of the fashion product: color, pattern, and seasonality.",
-    "Footwear": "Describe the following of the fashion product: sole type, closure type, and occasion.",
-    "Accessories": "Describe the following of the fashion product: style, functionality, and water resistance.",
-    "HomeDecor": "Describe the following of the fashion product: dimensions, style, and placement area."
+    "Apparel": (
+        "Provide a detailed description of the apparel based on its visual and contextual attributes. "
+        "Include the *primary color* and any *secondary or accent colors*, describing their placement and contrast. "
+        "Describe the *pattern or design elements* present (e.g., floral, stripes, abstract, embroidery), highlighting "
+        # "how they contribute to the overall aesthetic. Additionally, specify the *fabric texture* (e.g., smooth, ribbed, sheer) "
+        "and how it influences the look and feel of the garment. Finally, mention the *seasonality*, explaining whether the apparel "
+        "is best suited for warm weather, cold climates, or all-season wear."
+    ),
+
+    "Footwear": (
+        "Provide a detailed description of the footwear, emphasizing its structural and stylistic elements. "
+        "Start with the *sole type*, explaining whether it is flat, cushioned, treaded, or designed for grip and durability. "
+        "Describe the *closure type*, including laces, buckles, slip-on mechanisms, or velcro, and how they affect usability. "
+        "Include details about the *toe shape* (e.g., rounded, pointed, square) and how it contributes to the design. "
+        "Discuss the *upper material and texture*, mentioning whether it’s smooth leather, suede, or breathable mesh. "
+        "Finally, specify the *occasion and use-case*, indicating whether the footwear is ideal for casual outings, formal events, athletic activities, or everyday wear."
+    ),
+
+    "Accessories": (
+        "Describe the accessory in terms of its *style, materials, and functional attributes*. "
+        "Start with the *dominant color* and any *secondary hues or embellishments*, explaining their effect on the overall design. "
+        "Describe the *material and finish* (e.g., polished gold, matte leather, textured metal) and how they influence the aesthetic. "
+        "Provide insight into the *functionality*, whether it serves a decorative, practical, or multi-functional purpose (e.g., timekeeping for watches, storage for bags). "
+        "Discuss any *gemstones, engravings, or patterns* present, highlighting their significance. "
+        "Additionally, mention whether the accessory is *water-resistant or waterproof*, specifying if it is suitable for daily wear, outdoor activities, or formal occasions."
+    ),
+
+    "HomeDecor": (
+        "Provide a rich and detailed description of the home decor product, focusing on *dimensions, style, and placement area*. "
+        "Start with the *primary color and any accent colors*, explaining how they complement different interiors. "
+        "Describe the *texture and finish* (e.g., glossy, matte, distressed, smooth) and how they contribute to its appeal. "
+        "Mention the *design style* (e.g., minimalist, bohemian, vintage) and any *patterns or embellishments* present. "
+        "Provide insights into the *shape and proportions*, explaining how they affect the room’s ambiance. "
+        "Finally, describe the *placement area*, specifying whether the item is suited for living rooms, bedrooms, offices, or outdoor spaces."
+    )
 }
 
 def get_structured_output(product_data, product_class):

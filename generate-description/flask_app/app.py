@@ -3,6 +3,7 @@ from flask_cors import CORS
 from kafka_service import send_response_to_kafka
 from classification_service import classify_product
 from feature_extraction import get_structured_output
+from ontology_service import create_ontology_node
 import json
 
 # Initialize Flask app
@@ -36,9 +37,8 @@ def get_data_from_kafka():
         print(taxonomical_class)
 
         # Step 5: Execute CypherSQL query
+        create_ontology_node(taxonomical_class)
         
-        
-
         return jsonify({
             'status': 'success',
             'message': 'Node accomodated in graph',

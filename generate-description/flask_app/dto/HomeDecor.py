@@ -1,41 +1,40 @@
 from pydantic import BaseModel, Field
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 
 class HomeDecor(BaseModel):
-    # Visual Features
-    primary_color: str = Field(..., description="Dominant color of the home decor item")
-    secondary_colors: Optional[List[str]] = Field(None, description="Secondary or accent colors")
-    material: str = Field(..., description="Primary material used (e.g., Wood, Ceramic, Metal)")
-    finish: Optional[str] = Field(None, description="Finish of the item (e.g., Matte, Glossy, Textured)")
-    pattern: Optional[str] = Field(None, description="Pattern design on the decor item (e.g., Solid, Striped, Floral)")
-    texture: Optional[str] = Field(None, description="Surface texture (e.g., Smooth, Rough, Embossed)")
-    dimensions: Optional[str] = Field(None, description="Dimensions of the decor item (e.g., 36x24x12 inches)")
+    # 📌 Hierarchical Attributes (Ontology Structure)
+    domain: str = Field("Fashion", description="The domain capturing the intersection of fashion and home aesthetics, where style extends into living spaces.")
+    product_class: str = Field("Home Decor", description="A category for items that contribute to the interior design and ambiance of living environments, blending fashion with functionality.")
+    category: str = Field(..., description="A broader grouping within Home Decor, aligning items by their role in home settings, such as Furniture, Lighting, or Wall Art.")
+    subcategory: Optional[str] = Field(None, description="A deeper classification within a category, detailing items by specific style or application, like Table Lamps, Vanity Mirrors, or Area Rugs.")
 
-    # Functional Features
-    category: str = Field(..., description="Category of the home decor item (e.g., Lighting, Furniture, Art)")
-    subcategory: Optional[str] = Field(None, description="Subcategory within the decor type (e.g., Table Lamp, Vanity Mirror)")
-    placement_area: Optional[str] = Field(None, description="Recommended placement area (e.g., Living Room, Bathroom)")
-    functionality: Optional[str] = Field(None, description="Function or utility of the item (e.g., Storage, Aesthetic)")
-    installation_required: Optional[bool] = Field(None, description="Whether the decor item requires installation")
-    power_source: Optional[str] = Field(None, description="Power source if applicable (e.g., Electric, Battery)")
-    weight: Optional[float] = Field(None, description="Weight of the decor item in kilograms")
+    # 📌 Class-Specific Attributes (Stored as `HAS_FEATURE` Nodes)
+    material: str = Field(..., description="Primary material composition of the decor item (e.g., Wood, Ceramic, Metal, Glass).")
+    finish: Optional[str] = Field(None, description="Surface treatment of the item affecting its look and feel (e.g., Matte, Glossy, Textured).")
+    pattern: Optional[str] = Field(None, description="Visual motif or design (e.g., Solid, Stripes, Floral, Geometric).")
+    texture: Optional[str] = Field(None, description="Physical texture of the surface (e.g., Smooth, Rough, Embossed).")
+    dimensions: Optional[str] = Field(None, description="Size specification of the decor item (e.g., 36x24x12 inches).")
+    placement_area: Optional[str] = Field(None, description="Recommended location for item placement (e.g., Living Room, Bedroom, Bathroom).")
+    functionality: Optional[str] = Field(None, description="Main purpose of the item (e.g., Storage, Aesthetic, Illumination).")
+    installation_required: Optional[bool] = Field(None, description="Indicates if the item requires assembly or mounting (e.g., True, False).")
+    power_source: Optional[str] = Field(None, description="Energy requirement for the item, if applicable (e.g., Electric, Battery, None).")
+    weight: Optional[float] = Field(None, description="Weight of the decor item in kilograms.")
+    style_tags: Optional[List[str]] = Field(None, description="Design style descriptors (e.g., Minimalist, Rustic, Vintage).")
+    theme: Optional[str] = Field(None, description="Thematic inspiration influencing the item's aesthetics (e.g., Scandinavian, Industrial, Coastal).")
+    shape: Optional[str] = Field(None, description="Geometric form of the item (e.g., Round, Square, Rectangular).")
+    edge_design: Optional[str] = Field(None, description="Specific design details for edges (e.g., Beveled, Smooth, Curved).")
 
-    # Design Features
-    style_tags: Optional[List[str]] = Field(None, description="Design style tags (e.g., Minimalist, Rustic, Vintage)")
-    theme: Optional[str] = Field(None, description="Thematic design inspiration (e.g., Coastal, Industrial, Scandinavian)")
-    shape: Optional[str] = Field(None, description="Shape of the item (e.g., Round, Square, Rectangular)")
-    edge_design: Optional[str] = Field(None, description="Design of the edges (e.g., Beveled, Smooth, Curved)")
+    # 📌 Metadata Fields (Trends, Sustainability, Compatibility)
+    # trend_tags: Optional[List[str]] = Field(None, description="Associated home decor trends (e.g., Smart Home, Sustainable Living, Vintage Aesthetics).")
+    # eco_certifications: Optional[List[str]] = Field(None, description="Sustainability and energy certifications (e.g., FSC Certified, Energy Star).")
+    trend_tags: Optional[List[Dict[str, Any]]] = Field(
+        None, description="Trends related to this product. Example: [{'trend': 'Minimalist', 'influenced_by': ['material', 'theme']}]"
+    )
 
-    # Compatibility
-    compatible_styles: Optional[List[str]] = Field(None, description="List of compatible decor styles (e.g., Modern, Bohemian)")
-    complementary_items: Optional[List[str]] = Field(None, description="Other decor items that pair well with this one")
-    recommended_color_schemes: Optional[List[str]] = Field(None, description="Suggested color schemes for pairing")
+    complementary_items: Optional[List[Dict[str, str]]] = Field(
+        None, description="Complementary items with relation type. Example: [{'item': 'Wall Art', 'relation': 'pairs_well_with'}]"
+    )
+    
+    # compatible_styles: Optional[List[str]] = Field(None, description="Interior design styles that harmonize with this item (e.g., Modern, Bohemian).")
+    recommended_color_schemes: Optional[List[str]] = Field(None, description="Suggested color combinations for better visual appeal.")
 
-    # Trend and Cultural Features
-    trend_tags: Optional[List[str]] = Field(None, description="Trendy associations (e.g., Smart Home, Sustainable Living)")
-    cultural_influence: Optional[str] = Field(None, description="Cultural or regional inspiration (e.g., Japanese Zen, Moroccan Tiles)")
-    historical_inspiration: Optional[str] = Field(None, description="Historical design influence (e.g., Victorian, Mid-Century Modern)")
-
-    # Metadata
-    durability_rating: Optional[float] = Field(None, description="Durability score of the decor item")
-    eco_certifications: Optional[List[str]] = Field(None, description="List of eco-friendly certifications (e.g., FSC, Energy Star)")
