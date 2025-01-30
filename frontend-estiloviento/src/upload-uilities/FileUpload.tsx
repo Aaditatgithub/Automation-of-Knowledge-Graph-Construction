@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Papa from 'papaparse'; // To parse CSV
 import { Upload, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
-import { UploadProgress } from '../../types/upload';
+import { UploadProgress } from './upload';
 
 interface FileUploadProps {
   onUpload: (row: Record<string, any>, index: number, total: number) => Promise<void>;

@@ -1,254 +1,155 @@
----
+# Automated Knowledge Graph Construction
 
-# Stylumia Hackathon Project - Automated KG Construction
+Welcome to the Automated Knowledge Graph Construction project, developed during the Stylumia Hackathon. This project aims to streamline the creation of knowledge graphs by integrating a React-based frontend with a Flask backend, utilizing Apache Kafka for efficient data processing.
 
-## Sample Outputs
+## Table of Contents
 
----
+- [Sample Output](#sample-output)
+- [Project Structure](#project-structure)
+- [Setup Instructions](#setup-instructions)
+  - [1. Running the React Application](#1-running-the-react-application)
+  - [2. Setting Up Apache Kafka with Docker](#2-setting-up-apache-kafka-with-docker)
+  - [3. Running the Flask Application](#3-running-the-flask-application)
+- [Additional Notes](#additional-notes)
+- [License](#license)
 
-# Stylumia Hackathon Project - Automated KG Construction
+## Sample Output
 
-## Sample Outputs
+![Sample Ontology for Two Products](outputs/ontology-2-products.png)
 
-[![Sample-output](/outputs/ontology-2-products.png)](/outputs/ontology-2-products.png)
+*An example ontology generated for two products.*
 
-*Sample ontology for merely 2 products.*
-
-## Folder Structure
+## Project Structure
 
 ```
 Stylumia-Hackathon/
-│
 ├── frontend/                     # React-based frontend
 │   ├── src/                      # Source files for the React app
 │   ├── .bolt/                    # Configuration files
 │   ├── package.json              # Node.js project metadata
 │   └── vite.config.ts            # Vite configuration
-│
-├── generate-description/         # Directory for other related scripts
-│   ├── flask_app/                    # Flask-based backend API
-│   └── myenv
+├── generate-description/         # Backend-related scripts
+│   ├── flask_app/                # Flask-based backend API
+│   └── myenv/                    # Python virtual environment
 ├── docker-compose.yml            # Docker Compose setup for Apache Kafka
-├── unifashionLLM.ipynb           # Code for loading llava model and finetuning it with lora
-└── Readme.md                     # Project documentation
+├── unifashionLLM.ipynb           # Code for loading and fine-tuning the LLava model with LoRA
+└── README.md                     # Project documentation
 ```
-
----
 
 ## Setup Instructions
 
 To set up and run the project locally, follow these steps:
 
-### 1. Running the Vite React App
+### 1. Running the React Application
 
-1. Navigate to the `frontend` directory:
+1. **Navigate to the `frontend` directory:**
+
    ```bash
    cd frontend
    ```
 
-2. Install dependencies:
+2. **Install dependencies:**
+
    ```bash
    npm install
    ```
 
-3.0 Force install react-d3-graph to resolve any compatibility issues:
-   ```bash
-   npm install react-d3-graph --force
-   ```
+3. **Start the development server:**
 
-3. Start the development server:
    ```bash
    npm run dev
    ```
 
-4. Open your browser and navigate to:
+4. **Access the application:**
+
+   Open your browser and navigate to `http://localhost:5173`.
+
+### 2. Setting Up Apache Kafka with Docker
+
+1. **Ensure Docker is installed and running on your system.**
+
+2. **Navigate to the root of the project directory:**
+
+   ```bash
+   cd ..
    ```
-   http://localhost:3000
-   ```
 
----
+3. **Start the Kafka services using Docker Compose:**
 
-### 2. Setting up Docker for Apache Kafka
-
-1. Ensure Docker is installed and running on your system.
-
-2. Navigate to the root of the project directory where the `docker-compose.yml` file is located.
-
-3. Start the Kafka services using Docker Compose:
    ```bash
    docker-compose up -d
    ```
 
-4. Confirm that Kafka is running by checking the Docker containers:
+4. **Verify that Kafka is running:**
+
    ```bash
    docker ps
    ```
 
----
+   Ensure the Kafka container is listed and running.
 
-### 3. Running the Flask App
+### 3. Running the Flask Application
 
-1. Navigate to the `generate-description` directory:
+1. **Navigate to the `kg-construct` directory:**
+
    ```bash
    cd generate-description
    ```
 
-2. Create a virtual environment (if not already done):
+2. **Create a virtual environment (if not already done):**
+
    ```bash
    python -m venv myenv
    ```
 
-3. Activate the virtual environment:
+3. **Activate the virtual environment:**
+
    - On macOS/Linux:
+
      ```bash
      source myenv/bin/activate
      ```
+
    - On Windows:
+
      ```bash
      myenv\Scripts\activate
-     ``` 
+     ```
 
-4. Install required Python dependencies inside flask_app dir:
+4. **Navigate to the `flask_app` directory:**
+
+   ```bash
+   cd flask_app
+   ```
+
+5. **Install required Python dependencies:**
+
    ```bash
    pip install -r requirements.txt
    ```
 
-5. Start the Flask app:
+6. **Start the Flask application:**
+
    ```bash
    python app.py
    ```
 
-6. Ensure the Kafka container is running for proper Flask-Kafka integration.
-
----
+   Ensure the Kafka container is running for proper Flask-Kafka integration.
 
 ## Additional Notes
 
-- Ensure Node.js and Python are installed on your machine.
-- Make sure Docker is properly configured and has access to the necessary resources (memory, CPU).
-- The Flask app communicates with Kafka, so Kafka must be running before starting the Flask app.
+- **Prerequisites:**
+  - Ensure [Node.js](https://nodejs.org/) and [Python](https://www.python.org/) are installed on your machine.
+  - Make sure Docker is properly configured and has access to the necessary resources (memory, CPU).
 
---- 
+- **Service Dependencies:**
+  - The Flask application communicates with Kafka; thus, Kafka must be running before starting the Flask app.
 
-Feel free to adjust paths or add details as per your project needs.
+- **Model Training:**
+  - For details on loading and fine-tuning the LLava model with LoRA, refer to the `unifashionLLM.ipynb` notebook.
 
+## License
 
-*Click on the image above to watch the demo video.*
-
-## Folder Structure
-
-```
-Stylumia-Hackathon/
-│
-├── frontend/                     # React-based frontend
-│   ├── src/                      # Source files for the React app
-│   ├── .bolt/                    # Configuration files
-│   ├── package.json              # Node.js project metadata
-│   └── vite.config.ts            # Vite configuration
-│
-├── generate-description/         # Directory for other related scripts
-│   ├── flask_app/                    # Flask-based backend API
-│   └── myenv
-├── docker-compose.yml            # Docker Compose setup for Apache Kafka
-├── unifashionLLM.ipynb           # Code for loading llava model and finetuning it with lora
-└── Readme.md                     # Project documentation
-```
+This project is licensed under the [MIT License](LICENSE).
 
 ---
-
-## Setup Instructions
-
-To set up and run the project locally, follow these steps:
-
-### 1. Running the Vite React App
-
-1. Navigate to the `frontend` directory:
-   ```bash
-   cd frontend
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3.0 Force install react-d3-graph to resolve any compatibility issues:
-   ```bash
-   npm install react-d3-graph --force
-   ```
-
-3. Start the development server:
-   ```bash
-   npm run dev
-   ```
-
-4. Open your browser and navigate to:
-   ```
-   http://localhost:3000
-   ```
-
----
-
-### 2. Setting up Docker for Apache Kafka
-
-1. Ensure Docker is installed and running on your system.
-
-2. Navigate to the root of the project directory where the `docker-compose.yml` file is located.
-
-3. Start the Kafka services using Docker Compose:
-   ```bash
-   docker-compose up -d
-   ```
-
-4. Confirm that Kafka is running by checking the Docker containers:
-   ```bash
-   docker ps
-   ```
-
----
-
-### 3. Running the Flask App
-
-1. Navigate to the `generate-description` directory:
-   ```bash
-   cd generate-description
-   ```
-
-2. Create a virtual environment (if not already done):
-   ```bash
-   python -m venv myenv
-   ```
-
-3. Activate the virtual environment:
-   - On macOS/Linux:
-     ```bash
-     source myenv/bin/activate
-     ```
-   - On Windows:
-     ```bash
-     myenv\Scripts\activate
-     ``` 
-
-4. Install required Python dependencies inside flask_app dir:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-5. Start the Flask app:
-   ```bash
-   python app.py
-   ```
-
-6. Ensure the Kafka container is running for proper Flask-Kafka integration.
-
----
-
-## Additional Notes
-
-- Ensure Node.js and Python are installed on your machine.
-- Make sure Docker is properly configured and has access to the necessary resources (memory, CPU).
-- The Flask app communicates with Kafka, so Kafka must be running before starting the Flask app.
-
---- 
-
-Feel free to adjust paths or add details as per your project needs.
