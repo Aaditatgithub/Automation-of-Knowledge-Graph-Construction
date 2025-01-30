@@ -15,7 +15,7 @@ Welcome to the Automated Knowledge Graph Construction project, developed during 
 
 ## Sample Output
 
-![Sample Ontology for Two Products](outputs/ontology-2-products.png)
+![Sample Ontology for Two Products](../Automation-of-Knowledge-Graph-Construction/outputs/image.png)
 
 *An example ontology generated for two products.*
 
