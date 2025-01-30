@@ -145,11 +145,4 @@ To set up and run the project locally, follow these steps:
 - **Service Dependencies:**
   - The Flask application communicates with Kafka; thus, Kafka must be running before starting the Flask app.
 
-- **Model Training:**
-  - For details on loading and fine-tuning the LLava model with LoRA, refer to the `unifashionLLM.ipynb` notebook.
 
-## License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
