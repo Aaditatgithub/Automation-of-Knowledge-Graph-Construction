@@ -251,4 +251,3 @@ To set up and run the project locally, follow these steps:
 
 --- 
 
-Feel free to adjust paths or add details as per your project needs.
