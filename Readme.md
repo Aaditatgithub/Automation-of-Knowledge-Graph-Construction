@@ -93,7 +93,7 @@ To set up and run the project locally, follow these steps:
 1. **Navigate to the `kg-construct` directory:**
 
    ```bash
-   cd generate-description
+   cd kg-construct
    ```
 
 2. **Create a virtual environment (if not already done):**
