@@ -48,17 +48,19 @@ def create_ontology_node(taxonomical_class):
     }
     neo4j_conn.execute_query(query_product, params_product)
 
-    # Step 4: Get all attributes from Pydantic model
+    # Step 4: Get all attributes from the Pydantic model
     attributes = taxonomical_class.model_dump()
 
-    # Step 5: Create feature nodes, linking them to the product
+    # Step 5: Create feature nodes and dynamically name the relationship based on the field name
     for attr, value in attributes.items():
         if attr not in ["domain", "product_class", "category", "subcategory", "trend_tags", "complementary_items"]:
             if is_valid_value(value):
-                query_feature = """
-                MATCH (p:Product {name: $product_name})
-                MERGE (f:Feature {name: $value, type: $attr})
-                MERGE (p)-[:HAS_FEATURE]->(f)
+                # Construct a dynamic relationship type, e.g. "HAS_MATERIAL" if attr is "material"
+                rel_type = f"HAS_{attr.upper()}"
+                query_feature = f"""
+                MATCH (p:Product {{name: $product_name}})
+                MERGE (f:Feature {{name: $value, type: $attr}})
+                MERGE (p)-[:{rel_type}]->(f)
                 """
                 params_feature = {
                     "product_name": subcategory,
@@ -67,14 +69,14 @@ def create_ontology_node(taxonomical_class):
                 }
                 neo4j_conn.execute_query(query_feature, params_feature)
 
-    # Step 6: Handle trend tags
+    # Step 6: Handle trend tags (unchanged)
     trend_tags = attributes.get("trend_tags", []) or []
     for trend in trend_tags:
         trend_name = trend.get("trend")
         influenced_by = trend.get("influenced_by", [])
 
         if is_valid_value(trend_name):
-            # 6a: Link Product to Trend
+            # Link Product to Trend
             query_trend = """
             MATCH (p:Product {name: $product_name})
             MERGE (t:Trend {name: $trend_name})
@@ -86,7 +88,7 @@ def create_ontology_node(taxonomical_class):
             }
             neo4j_conn.execute_query(query_trend, params_trend)
 
-            # 6b: Link Features to Trend via INFLUENCES
+            # Link Features to Trend via INFLUENCES
             for attr in influenced_by:
                 if is_valid_value(attr):
                     query_trend_link = """
@@ -101,7 +103,7 @@ def create_ontology_node(taxonomical_class):
                     }
                     neo4j_conn.execute_query(query_trend_link, params_trend_link)
 
-    # Step 7: Handle complementary items
+    # Step 7: Handle complementary items (unchanged)
     complementary_items = attributes.get("complementary_items", []) or []
     for item in complementary_items:
         complementary_name = item.get("item")
